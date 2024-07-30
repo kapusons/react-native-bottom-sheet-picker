@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useImperativeHandle} from 'react';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 
 import BottomSheetPickerOutlinedTitleComponent from './BottomSheetPickerOutlinedTitleComponent';
@@ -8,9 +8,18 @@ import BottomSheetPickerListComponent from './BottomSheetPickerListComponent';
 import {TITLE_FONT_SIZE} from '../constants/font_size_constant';
 import pickerStyleHelper from '../helpers/picker_style_helper';
 
-const BottomSheetPickerComponent = (props) => {
+const BottomSheetPickerComponent = React.forwardRef((props, ref) => {
   let pickerRef = React.createRef();
   let pickerModalRef = React.createRef();
+
+  useImperativeHandle(ref, () => ({
+    showPicker: () => {
+      showPicker();
+    },
+    forceDismiss: () => {
+      pickerModalRef.current?.dismiss();
+    }
+  }));
 
   const onSelectItem = (item) => {
     props.onSelectItem(item);
@@ -78,7 +87,7 @@ const BottomSheetPickerComponent = (props) => {
       { !!props.title && renderPickerTitle()}
 
       <View style={[pickerStyleHelper.getContainerStyleByType(props.isOutlined, props.disabled, props.disabledColor), props.pickerStyle]}>
-        <TouchableOpacity onPress={() => showPicker()} style={{height: '100%'}}>
+        <TouchableOpacity ref={ref} onPress={() => showPicker()} style={{height: '100%'}}>
           { !!props.customPicker ? props.customPicker
             : <BottomSheetPickerBoxComponent
                 items={props.items}
@@ -107,7 +116,7 @@ const BottomSheetPickerComponent = (props) => {
       <FormBottomSheetModalComponent ref={pickerRef} formModalRef={pickerModalRef} snapPoints={props.snapPoints || ['60%']} onDismissModal={() => onDismissModal()} />
     </View>
   )
-}
+})
 
 const styles = StyleSheet.create({
   titleLabel: {
