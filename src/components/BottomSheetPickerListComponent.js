@@ -32,7 +32,7 @@ const BottomSheetPickerListComponent = (props) => {
   const renderListItem = (item, index) => {
     return <BottomSheetPickerListItemComponent
             index={index}
-            items={props.items.filter(item => item.label.includes(searchedText))}
+            items={props.items.filter(item => item.label.toLowerCase().includes(searchedText.toLowerCase()))}
             item={item}
             searchedText={searchedText}
             selectedItem={selectedItem}
@@ -57,13 +57,14 @@ const BottomSheetPickerListComponent = (props) => {
             leftCheckIconColor={props.leftCheckIconColor}
             showSubtitle={props.showSubtitle}
             subtitleStyle={props.subtitleStyle}
+            customPreviewItem={props.customPreviewItem}
           />
   }
 
   const renderList = () => {
     return <BottomSheetFlatList
               contentContainerStyle={[{flexGrow: 1, padding: 16, paddingTop: 0, paddingBottom: 20}, props.scrollViewStyle]}
-              data={props.items.filter(item => item.label.includes(searchedText))}
+              data={props.items.filter(item => item.label.toLowerCase().includes(searchedText.toLowerCase()))}
               keyExtractor={(option, index) => index.toString()}
               renderItem={({ item, index }) => (
                 renderListItem(item, index)

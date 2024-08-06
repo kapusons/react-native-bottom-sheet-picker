@@ -45,14 +45,18 @@ const BottomSheetPickerListItemComponent = (props) => {
 
   return (
     <React.Fragment>
+      <View style={{flex: 1, flexDirection: "row", alignItems: 'center'}}>
+      { props.customPreviewItem ? props.customPreviewItem(item) : null }
       <TouchableOpacity
         onPress={() => props.onSelectItem()}
         style={[styles.container, props.showSubtitle && {height: 64}, (props.showSubtitle && item.subtitle) && {paddingTop: 2}, props.listItemStyle]}
       >
+
         { props.customListItem ? props.customListItem(item)
           :
           <View style={{flex: 1, flexDirection: "row", alignItems: 'center'}}>
             { (props.showLeftCheckIcon && !props.showCheckIcon && !props.showRadioStyle) && renderLeftCheckIcon()}
+
             <View style={{flex: 1}}>
               <TextHighlight textToHighlight={item.label} searchWords={[props.searchedText]} numberOfLines={1}
                 textStyle={[{ color: itemColor('black'), fontSize: LIST_ITEM_FONT_SIZE }, props.itemFontFamily && {fontFamily: props.itemFontFamily}, props.itemTextStyle]}
@@ -64,6 +68,7 @@ const BottomSheetPickerListItemComponent = (props) => {
         }
         {!props.hideListItemAudio ? renderAudioBtn() : renderRightIcon()}
       </TouchableOpacity>
+      </View>
       <View style={{ borderColor: '#D3D3D3', borderBottomWidth: props.index == props.items.length - 1 ? 0 : 0.7 }} />
     </React.Fragment>
   )
@@ -74,6 +79,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     minHeight: 56,
+    flex: 1,
   },
   roundContainer: {
     alignItems: 'center',
@@ -88,7 +94,7 @@ const styles = StyleSheet.create({
   subtitle: {
     color: '#989696',
     fontSize: LIST_ITEM_SUBTITLE_FONT_SIZE,
-    marginTop: 4 
+    marginTop: 4
   }
 });
 
