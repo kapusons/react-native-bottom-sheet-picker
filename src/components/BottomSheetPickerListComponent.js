@@ -66,6 +66,7 @@ const BottomSheetPickerListComponent = (props) => {
               contentContainerStyle={[{flexGrow: 1, padding: 16, paddingTop: 0, paddingBottom: 20}, props.scrollViewStyle]}
               data={props.items.filter(item => item.label.toLowerCase().includes(searchedText.toLowerCase()))}
               keyExtractor={(option, index) => index.toString()}
+              ListEmptyComponent={props.ListEmptyComponent}
               renderItem={({ item, index }) => (
                 renderListItem(item, index)
               )}
