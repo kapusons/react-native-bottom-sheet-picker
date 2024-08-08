@@ -1,5 +1,5 @@
 import React, {useImperativeHandle} from 'react';
-import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import {View, Text, TouchableOpacity, StyleSheet, Dimensions} from 'react-native';
 
 import BottomSheetPickerOutlinedTitleComponent from './BottomSheetPickerOutlinedTitleComponent';
 import BottomSheetPickerBoxComponent from './BottomSheetPickerBoxComponent';
@@ -26,6 +26,20 @@ const BottomSheetPickerComponent = React.forwardRef((props, ref) => {
     pickerModalRef.current?.dismiss();
   }
 
+  const windowWidth = Dimensions.get('window').width;
+  const windowHeight = Dimensions.get('window').height;
+  const calculatePickerHeight = () => {
+    let h = 425
+    if (props.snapPoints && props.snapPoints[0]) {
+      try {
+        percentage = parseInt(props.snapPoints[0].split("%")[0])
+        h =  (percentage * windowHeight) / 100
+      } catch {
+      }
+    }
+    return h - 40 ; // 40 "padding bottom"
+  }
+
   const showPicker = () => {
     if (props.disabled)
       return
@@ -39,7 +53,7 @@ const BottomSheetPickerComponent = React.forwardRef((props, ref) => {
                         customListItem={props.customListItem}
                         listItemStyle={props.listItemStyle}
                         itemTextStyle={props.itemTextStyle}
-                        pickerContentHeight={props.pickerContentHeight}
+                        pickerContentHeight={props.pickerContentHeight || calculatePickerHeight()}
                         primaryColor={props.primaryColor}
                         secondaryColor={props.secondaryColor}
                         onSelectItem={onSelectItem}
