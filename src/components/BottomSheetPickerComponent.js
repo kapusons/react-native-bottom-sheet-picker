@@ -64,6 +64,7 @@ const BottomSheetPickerComponent = React.forwardRef((props, ref) => {
                         clearSearchIconColor={props.clearSearchIconColor}
                         customPreviewItem={props.customPreviewItem}
                         ListEmptyComponent={props.ListEmptyComponent}
+                        onAddField={props.onAddField}
                       />
 
     pickerRef.current?.setBodyContent(content);

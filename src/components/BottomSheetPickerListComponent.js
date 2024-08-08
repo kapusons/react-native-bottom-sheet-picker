@@ -80,6 +80,8 @@ const BottomSheetPickerListComponent = (props) => {
         { props.isSearchable &&
           <SearchBoxComponent placeholder={props.searchPlaceholder} itemTextStyle={props.itemTextStyle} searchInputStyle={props.searchInputStyle}
             searchInputContainerStyle={props.searchInputContainerStyle} searchIconColor={props.searchIconColor} clearSearchIconColor={props.clearSearchIconColor}
+            data={props.items.filter(item => item.label.toLowerCase().includes(searchedText.toLowerCase()))}
+            onAddField={props.onAddField}
             onSearchChange={(text) => setSearchedText(text)}
           />
         }
