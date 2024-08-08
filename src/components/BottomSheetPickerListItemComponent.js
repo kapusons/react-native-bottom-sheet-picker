@@ -46,7 +46,7 @@ const BottomSheetPickerListItemComponent = (props) => {
   return (
     <React.Fragment>
       <View style={{flex: 1, flexDirection: "row", alignItems: 'center'}}>
-      { props.customPreviewItem ? props.customPreviewItem(item) : null }
+      <View>{ props.customPreviewItem ? props.customPreviewItem(item) : null }</View>
       <TouchableOpacity
         onPress={() => props.onSelectItem()}
         style={[styles.container, props.showSubtitle && {height: 64}, (props.showSubtitle && item.subtitle) && {paddingTop: 2}, props.listItemStyle]}
