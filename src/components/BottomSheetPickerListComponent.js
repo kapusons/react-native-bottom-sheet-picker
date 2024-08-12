@@ -85,6 +85,7 @@ const BottomSheetPickerListComponent = (props) => {
             onSearchChange={(text) => setSearchedText(text)}
           />
         }
+        { props.explanationBox && props.explanationBox() }
         { renderList() }
       </View>
     </TouchableWithoutFeedback>

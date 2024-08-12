@@ -79,6 +79,7 @@ const BottomSheetPickerComponent = React.forwardRef((props, ref) => {
                         customPreviewItem={props.customPreviewItem}
                         ListEmptyComponent={props.ListEmptyComponent}
                         onAddField={props.onAddField}
+                        explanationBox={props.explanationBox}
                       />
 
     pickerRef.current?.setBodyContent(content);
