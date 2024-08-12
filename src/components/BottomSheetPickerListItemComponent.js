@@ -10,6 +10,7 @@ import pickerHelper from '../helpers/picker_helper';
 
 const BottomSheetPickerListItemComponent = (props) => {
   const {item} = props;
+
   const itemColor = (defaultColor) => {
     return (item.disabled && pickerHelper.getSelectedValue(props.selectedFieldName, item) != props.selectedItem) ? '#b5b5b5' : defaultColor;
   }
@@ -42,6 +43,8 @@ const BottomSheetPickerListItemComponent = (props) => {
               {(item.value == props.selectedItem) && <FontAwesomeIcon name='check' size={13} color={props.leftCheckIconColor || '#ffffff'}/>}
            </View>
   }
+
+  if (!item) return
 
   return (
     <React.Fragment>

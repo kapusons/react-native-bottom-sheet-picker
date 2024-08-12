@@ -8,7 +8,7 @@ const SearchBoxComponent = (props) => {
     setSearchedText(text);
     props.onSearchChange(text);
   }
-  const addEnabled = props.onAddField && props.data.length == 0;
+  const addEnabled = searchedText && props.onAddField && props.data.length == 0;
 
   return (
     <View style={[{justifyContent: 'center', marginHorizontal: 16, marginTop: 12, marginBottom: 6}, props.searchInputContainerStyle]}>
