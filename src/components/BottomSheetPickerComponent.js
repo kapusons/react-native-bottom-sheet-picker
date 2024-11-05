@@ -88,6 +88,7 @@ const BottomSheetPickerComponent = React.forwardRef((props, ref) => {
         ListEmptyComponent={props.ListEmptyComponent}
         onAddField={props.onAddField}
         explanationBox={props.explanationBox}
+        errorBox={props.errorBox}
       />
     );
 

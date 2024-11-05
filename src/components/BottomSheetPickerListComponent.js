@@ -139,6 +139,7 @@ const BottomSheetPickerListComponent = (props) => {
             onSearchChange={(text) => setSearchedText(text)}
           />
         )}
+        {props.errorBox && props.errorBox()}
         {props.explanationBox && props.explanationBox()}
         {renderList()}
       </View>
