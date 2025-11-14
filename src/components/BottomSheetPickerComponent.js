@@ -161,7 +161,7 @@ const BottomSheetPickerComponent = React.forwardRef((props, ref) => {
         ]}
       >
         <TouchableOpacity
-          ref={ref}
+          // ref={ref}
           onPress={() => showPicker()}
           style={{ height: "100%" }}
         >
@@ -196,6 +196,7 @@ const BottomSheetPickerComponent = React.forwardRef((props, ref) => {
         ref={pickerRef}
         formModalRef={pickerModalRef}
         snapPoints={props.snapPoints || ["60%"]}
+        enableDynamicSizing={props.enableDynamicSizing || false}
         onDismissModal={() => onDismissModal()}
       />
     </View>

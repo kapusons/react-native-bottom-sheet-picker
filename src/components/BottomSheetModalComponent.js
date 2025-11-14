@@ -1,21 +1,20 @@
-import React, { useCallback, useState, useEffect } from 'react';
-import {BackHandler} from 'react-native';
-import {
-  BottomSheetModal,
-  BottomSheetBackdrop,
-} from '@gorhom/bottom-sheet';
+import React, { useCallback, useState, useEffect } from "react";
+import { BackHandler } from "react-native";
+import { BottomSheetModal, BottomSheetBackdrop } from "@gorhom/bottom-sheet";
 
 const BottomSheetModalComponent = (props, ref) => {
   const [currentIndex, setCurrentIndex] = useState(-1);
 
-  const renderBackdrop = useCallback( props => (
-    <BottomSheetBackdrop
-      {...props}
-      disappearsOnIndex={-1}
-      appearsOnIndex={0}
-    />
-  ), []);
-
+  const renderBackdrop = useCallback(
+    (props) => (
+      <BottomSheetBackdrop
+        {...props}
+        disappearsOnIndex={-1}
+        appearsOnIndex={0}
+      />
+    ),
+    []
+  );
 
   const onBackPress = () => {
     if (ref !== null) {
@@ -25,13 +24,19 @@ const BottomSheetModalComponent = (props, ref) => {
   };
 
   useEffect(() => {
-    if (currentIndex !== -1) {
-      BackHandler.addEventListener('hardwareBackPress', onBackPress);
-
-      return () =>
-        BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+    if (currentIndex === -1) {
+      return;
     }
-  }, [currentIndex]);
+
+    const subscription = BackHandler.addEventListener(
+      "hardwareBackPress",
+      onBackPress
+    );
+
+    return () => {
+      subscription.remove();
+    };
+  }, [currentIndex, onBackPress]);
 
   return (
     <BottomSheetModal
@@ -40,11 +45,15 @@ const BottomSheetModalComponent = (props, ref) => {
       backdropComponent={renderBackdrop}
       snapPoints={props.snapPoints}
       onDismiss={() => !!props.onDismiss && props.onDismiss()}
-      onChange={(index) => {setCurrentIndex(index); !!props.onChange && props.onChange(index)}}
+      onChange={(index) => {
+        setCurrentIndex(index);
+        !!props.onChange && props.onChange(index);
+      }}
+      enableDynamicSizing={props.enableDynamicSizing}
     >
-      { props.content }
+      {props.content}
     </BottomSheetModal>
-  )
+  );
 };
 
-export default  React.forwardRef(BottomSheetModalComponent);
+export default React.forwardRef(BottomSheetModalComponent);

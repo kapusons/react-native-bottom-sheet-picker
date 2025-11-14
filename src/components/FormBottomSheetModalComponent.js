@@ -28,6 +28,7 @@ class FormBottomSheetModalComponent extends React.Component {
         ref={this.props.formModalRef}
         content={this.state.bodyContent}
         snapPoints={this.state.snapPoints}
+        enableDynamicSizing={this.props.enableDynamicSizing}
         onDismiss={() => this.onDismissModal()}
         onChange={(index) => !!this.props.onChange && this.props.onChange(index)}
       />

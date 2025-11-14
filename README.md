@@ -72,6 +72,7 @@ const locations = [
   placeholderAudio={}
   playingUuid={playingUuid}
   updatePlayingUuid={(uuid) => setPlayingUuid(uuid)}
+  enableDynamicSizing={false}
 />
 ```
 
@@ -127,6 +128,7 @@ import {GestureHandlerRootView} from 'react-native-gesture-handler';
 | searchPlaceholder    |      ''       |  `string`  | The placeholder of the search text input   |
 | searchIconColor      |      ''       |  `string`  | Color of the search icon in the search input box   |
 | clearSearchIconColor |      ''       |  `string`  | Color of the clear text icon in the search box   |
+| enableDynamicSizing  |     false     |  `boolean` | Allow to expand and minimize the size of the bottom sheet   |
 
 #### Custom styles
 
