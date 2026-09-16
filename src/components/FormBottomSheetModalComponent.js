@@ -10,8 +10,8 @@ class FormBottomSheetModalComponent extends React.Component {
     }
   }
 
-  setBodyContent(bodyContent) {
-    this.setState({ bodyContent });
+  setBodyContent(bodyContent, callback) {
+    this.setState({bodyContent}, callback);
   }
 
   setSnapPoints(snapPoints) {

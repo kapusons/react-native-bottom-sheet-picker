@@ -1,4 +1,4 @@
-import React, { useImperativeHandle } from "react";
+import React, { useEffect, useImperativeHandle, useRef } from "react";
 import {
   View,
   Text,
@@ -15,8 +15,9 @@ import { TITLE_FONT_SIZE } from "../constants/font_size_constant";
 import pickerStyleHelper from "../helpers/picker_style_helper";
 
 const BottomSheetPickerComponent = React.forwardRef((props, ref) => {
-  let pickerRef = React.createRef();
-  let pickerModalRef = React.createRef();
+  const pickerRef = useRef(null);
+  const pickerModalRef = useRef(null);
+  const selectedItemRef = useRef(null);
 
   useImperativeHandle(ref, () => ({
     showPicker: () => {
@@ -30,8 +31,12 @@ const BottomSheetPickerComponent = React.forwardRef((props, ref) => {
     },
   }));
 
-  const onSelectItem = (item) => {
-    props.onSelectItem(item);
+  useEffect(() => {
+    rerender();
+  }, [props.items, props.selectedItem]);
+
+  const onSelectItem = item => {
+    selectedItemRef.current = item;
     pickerModalRef.current?.dismiss();
   };
 
@@ -48,65 +53,74 @@ const BottomSheetPickerComponent = React.forwardRef((props, ref) => {
     return h - 40; // 40 "padding bottom"
   };
 
-  const rerender = () => {
+  const rerender = callback => {
     const content = !!props.customPickerContent ? (
       props.customPickerContent
-    ) : (
-      <BottomSheetPickerListComponent
-        title={props.bottomSheetTitle}
-        items={props.items}
-        customBottomSheetTitle={props.customBottomSheetTitle}
-        customListItem={props.customListItem}
-        listItemStyle={props.listItemStyle}
-        itemTextStyle={props.itemTextStyle}
-        pickerContentHeight={
-          props.pickerContentHeight || calculatePickerHeight()
-        }
-        primaryColor={props.primaryColor}
-        secondaryColor={props.secondaryColor}
-        onSelectItem={onSelectItem}
-        hideListItemAudio={props.hideListItemAudio}
-        bottomSheetTitleStyle={props.bottomSheetTitleStyle}
-        selectedItem={props.selectedItem}
-        showCheckIcon={props.showCheckIcon}
-        checkIconSize={props.checkIconSize}
-        titleFontFamily={props.titleFontFamily}
-        itemFontFamily={props.itemFontFamily}
-        selectedFieldName={props.selectedFieldName}
-        showRadioStyle={props.showRadioStyle}
-        showLeftCheckIcon={props.showLeftCheckIcon}
-        leftCheckIconColor={props.leftCheckIconColor}
-        showSubtitle={props.showSubtitle}
-        subtitleStyle={props.subtitleStyle}
-        isSearchable={props.isSearchable}
-        searchPlaceholder={props.searchPlaceholder}
-        searchInputStyle={props.searchInputStyle}
-        searchInputContainerStyle={props.searchInputContainerStyle}
-        searchIconColor={props.searchIconColor}
-        clearSearchIconColor={props.clearSearchIconColor}
-        customPreviewItem={props.customPreviewItem}
-        ListEmptyComponent={props.ListEmptyComponent}
-        onAddField={props.onAddField}
-        explanationBox={props.explanationBox}
-        errorBox={props.errorBox}
-      />
-    );
+      ) : (
+        <BottomSheetPickerListComponent
+          title={props.bottomSheetTitle}
+          items={props.items}
+          customBottomSheetTitle={props.customBottomSheetTitle}
+          customListItem={props.customListItem}
+          listItemStyle={props.listItemStyle}
+          itemTextStyle={props.itemTextStyle}
+          pickerContentHeight={
+            props.pickerContentHeight || calculatePickerHeight()
+          }
+          primaryColor={props.primaryColor}
+          secondaryColor={props.secondaryColor}
+          onSelectItem={onSelectItem}
+          hideListItemAudio={props.hideListItemAudio}
+          bottomSheetTitleStyle={props.bottomSheetTitleStyle}
+          selectedItem={props.selectedItem}
+          showCheckIcon={props.showCheckIcon}
+          checkIconSize={props.checkIconSize}
+          titleFontFamily={props.titleFontFamily}
+          itemFontFamily={props.itemFontFamily}
+          selectedFieldName={props.selectedFieldName}
+          showRadioStyle={props.showRadioStyle}
+          showLeftCheckIcon={props.showLeftCheckIcon}
+          leftCheckIconColor={props.leftCheckIconColor}
+          showSubtitle={props.showSubtitle}
+          subtitleStyle={props.subtitleStyle}
+          isSearchable={props.isSearchable}
+          searchPlaceholder={props.searchPlaceholder}
+          searchInputStyle={props.searchInputStyle}
+          searchInputContainerStyle={props.searchInputContainerStyle}
+          searchIconColor={props.searchIconColor}
+          clearSearchIconColor={props.clearSearchIconColor}
+          customPreviewItem={props.customPreviewItem}
+          ListEmptyComponent={props.ListEmptyComponent}
+          onAddField={props.onAddField}
+          explanationBox={props.explanationBox}
+          errorBox={props.errorBox}
+        />
+      );
 
-    pickerRef.current?.setBodyContent(content);
-  };
+      pickerRef.current?.setBodyContent(content, callback);
+    };
 
   const showPicker = () => {
     if (props.disabled) return;
 
     !!props.onBottomSheetShow && props.onBottomSheetShow();
 
-    rerender();
-    pickerModalRef.current?.present();
+    rerender(() => {
+      pickerModalRef.current?.present();
+    });
   };
 
   const onDismissModal = () => {
-    !!props.onDismiss && props.onDismiss();
     pickerRef.current?.setBodyContent(null);
+
+    if (selectedItemRef.current !== null) {
+      const item = selectedItemRef.current;
+      selectedItemRef.current = null;
+
+      props.onSelectItem(item);
+    }
+
+    !!props.onDismiss && props.onDismiss();
   };
 
   const renderPickerTitle = () => {
